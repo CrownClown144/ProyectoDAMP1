@@ -34,6 +34,15 @@ class FinanzasPersonalesApp {
   }
 
   void registrarTransaccion() {
+    print("Ingrese el tipo de transaccion: 1.- Retiro  | 2.- Depósito");
+    var  tipotransaccion = int.parse(stdin.readLineSync() ?? "");
+    var tipo;
+    if (tipotransaccion == 1){
+      tipo = "Retiro";
+    }
+    else{
+      tipo = "Ingreso";
+    }
     print('Ingrese el concepto de la transacción:');
     var concepto = stdin.readLineSync() ?? '';
     print('Ingrese el monto de la transacción:');
@@ -47,7 +56,7 @@ class FinanzasPersonalesApp {
 
     var categoria = Category.values[int.parse(stdin.readLineSync() ?? '') - 1];
 
-    rf.addTransaction(concepto, monto, categoria);
+    rf.addTransaction(tipo,concepto, monto, categoria);
     print('Transacción registrada exitosamente.');
   }
 

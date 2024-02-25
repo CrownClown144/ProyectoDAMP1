@@ -3,8 +3,8 @@ import 'Transaction.dart';
 class  TransactionList {
   List<Transaction> transactions = [];
 
-  void addTransaction(String concept, double amount, Category category) {
-    var newTransaction = Transaction(concept, amount, category);
+  void addTransaction(String type, String concept, double amount, Category category) {
+    var newTransaction = Transaction(type, concept, category, amount);
     transactions.add(newTransaction);
   }
 
@@ -13,7 +13,7 @@ class  TransactionList {
     double gastos = 0;
 
     for (var transaccion in transactions) {
-      if (transaccion.amount > 0) {
+      if (transaccion.type == "Ingreso") {
         ingresos += transaccion.amount;
       } else {
         gastos += transaccion.amount.abs();
@@ -27,4 +27,6 @@ class  TransactionList {
     print('Gastos: \$${gastos.toStringAsFixed(2)}');
     print('Saldo: \$${saldo.toStringAsFixed(2)}');
   }
+
+  TransactionList();
 }
