@@ -3,7 +3,7 @@ import '../SeguimientoSaldo/EstadoFinanciero.dart';
 
 class EstablecerMetas{
   Meta meta;
-  EstadoFianaciero finanzas;
+  EstadoFinanciero finanzas;
 
   EstablecerMetas(this.meta, this.finanzas);
 

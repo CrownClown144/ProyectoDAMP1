@@ -10,8 +10,9 @@ import 'package:proyecto/EstablecerMetas/Meta.dart';
 class FinanzasPersonalesApp {
   TransactionList tl;
   EstablecerMetas em;
+  EstadoFinanciero ef;
 
-  FinanzasPersonalesApp(this.tl, this.em);
+  FinanzasPersonalesApp(this.tl, this.em, this.ef);
   void ejecutar() {
     print('Bienvenido al Sistema de Gestión de Finanzas Personales');
 
@@ -30,7 +31,7 @@ class FinanzasPersonalesApp {
             registrarTransaccion();
             break;
           case 2:
-            
+            mostrarResumen();
             break;
           case 3:
             metas();
@@ -100,6 +101,9 @@ class FinanzasPersonalesApp {
 
     tl.addTransaction(type, concepto, monto, categoria);
     print('Transacción registrada exitosamente.');
+  }
+  void mostrarResumen(){
+    ef.mostrarResumenFinanciero();
   }
 
   void metas(){
@@ -172,11 +176,11 @@ class FinanzasPersonalesApp {
 
 void main() {
   var tl = TransactionList();
-  var finanzas = EstadoFianaciero();
+  var ef = EstadoFinanciero(tl);
   var meta = Meta();
-  var em = EstablecerMetas(meta, finanzas);
+  var em = EstablecerMetas(meta, ef);
 
-  var app = FinanzasPersonalesApp(tl, em);
+  var app = FinanzasPersonalesApp(tl, em, ef);
   app.ejecutar();
 }
 

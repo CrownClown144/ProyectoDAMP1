@@ -7,6 +7,5 @@ class  TransactionList {
     var newTransaction = Transaction(type, concept, category, amount);
     transactions.add(newTransaction);
   }
-
   TransactionList();
 }
