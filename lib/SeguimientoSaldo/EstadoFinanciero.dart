@@ -29,4 +29,18 @@ class EstadoFinanciero{
       print("Tipo de operación: ${tran.type} - Monto: ${tran.amount} - Categoria: ${tran.category} - Concepto: ${tran.concept}");
     }
   }
+
+  void actualizarResumenFinanciero(){
+    double gastosTotales = 0.0;
+    double  ingresosTotales = 0.0;
+      for(var transaccion in transactionList.transactions){
+        if(transaccion.type == 'Ingreso'){
+          ingresosTotales += transaccion.amount;
+        }
+        else{
+          gastosTotales+= transaccion.amount.abs();
+        }
+      }
+      saldoActual = ingresosTotales-gastosTotales;
+  }
 }

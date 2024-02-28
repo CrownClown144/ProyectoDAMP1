@@ -98,18 +98,50 @@ class FinanzasPersonalesApp {
       return;
     }
     
+    if(monto > tl.obtenerSaldo() && type =='Retiro'){
+      print('');
+      print("*********** No cuentas con saldo suficiente! **************");
+    }
+    else{
+      tl.addTransaction(type, concepto, monto, categoria);
+      ef.actualizarResumenFinanciero();
+      print('');
+      print(' ********** Transacción registrada exitosamente. ************');
+      if(em.obtenerMetaFinanciera() != 0.0){
+        em.calculoMeta();
+      }
+      if(em.obtenerPresupuestoMensual() != 0.0 && type == 'Retiro'){
+        em.agregarIngreso(monto);
+        em.calculoPre();
+      }
 
-    tl.addTransaction(type, concepto, monto, categoria);
-    print('Transacción registrada exitosamente.');
+      if(em.obtenerPorcentajeMeta() >= 100){
+        print('');
+        print('========== Felicidades!! Has alcanzado la meta!!! ===========');
+        print('');
+      }else if(em.obtenerPorcentajePre()>=100){
+        print('');
+        print("========== Haz sobrepasado tu presupuesto mensual!! ==========");
+        print('');
+      }
+      else if(em.obtenerPorcentajeMeta() >= 100 && em.obtenerPorcentajePre() >= 100){
+        print('');
+        print('========== Felicidades!! Has alcanzado la meta!!! ===========');
+        print('');
+        print("========== Haz sobrepasado tu presupuesto mensual!! ==========");
+        print('');
+      }
+    }
   }
+
   void mostrarResumen(){
     ef.mostrarResumenFinanciero();
   }
 
   void metas(){
     print('\nSeleccione una opción:');
-      print('1. Establecer meta mensual');
-      print('2. Establecer meta financiera');
+      print('1. Establecer un presupuesto mensual');
+      print('2. Establecer una meta financiera');
       print('3. Ver el estado de mis metas');
       print('4. Salir');
 
@@ -117,7 +149,7 @@ class FinanzasPersonalesApp {
 
       switch (opcion) {
         case 1:
-            
+            establecerPresupuestoMensual();
           break;
         case 2:
             establecerMetaFinanciera();
@@ -166,11 +198,48 @@ class FinanzasPersonalesApp {
       }
     }
   }
+  
+  void establecerPresupuestoMensual(){
+    var presupuestoMensual = em.obtenerPresupuestoMensual();
+    if (presupuestoMensual == 0.0){
+      print('Ingrese su presupuesto mensual:');
+      double monto = double.parse(stdin.readLineSync()!);
+      if(monto <= 0){
+        print('Debe ingresar un valor valido');
+        return;
+      }
+      em.establecerPresupuestoMensual(monto);
+    }
+    else{
+      print('Ya tienes un presupuesto mensual establecido. ¿Deseas cambiarlo? 1.- Si | 2.- No');
+      var respuesta = int.parse(stdin.readLineSync()!);
+
+      switch(respuesta){
+        case 1:
+          print('Ingrese el monto de su nuevo presupuesto: ');
+          double nuevoPresupuesto = double.parse(stdin.readLineSync()!);
+          if(nuevoPresupuesto <= 0){
+            print('Debe ingresar un valor valido');
+            return;
+          }
+          em.establecerPresupuestoMensual(nuevoPresupuesto);
+          break;
+        case 2:
+          break;
+        default:
+          print('Opción no válida. Por favor.');
+          return;
+      }
+    }
+  }
 
   void  mostrarEstadoMetas(){
     print("================= Estado de las metas ===================");
     print('********* Meta Financiera *********');
     em.CalcularEstadoMetaFinanciera();
+    print('********* Presupuesto Mensual *********');
+    em.CalcularEstadoPresupuestoMensual();
+
   }
 }
 
