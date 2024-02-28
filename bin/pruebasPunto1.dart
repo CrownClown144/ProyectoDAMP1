@@ -139,6 +139,7 @@ class FinanzasPersonalesApp {
   }
 
   void metas(){
+    print('========== METAS ==========');
     print('\nSeleccione una opción:');
       print('1. Establecer un presupuesto mensual');
       print('2. Establecer una meta financiera');
